@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(COMP_MODULE VERSION 1.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+option(BUILD_SHARED_LIBS "Build shared library" ON)
+
+file(GLOB SOURCES "src/*.cpp")
+
+add_library(COMP ${SOURCES})
+
+set_target_properties(COMP PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+)
+
+target_include_directories(COMP PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+install(TARGETS COMP
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+install(FILES include/COMP.h DESTINATION include)
